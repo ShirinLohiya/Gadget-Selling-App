@@ -1,8 +1,8 @@
 # 🛒 Gadget Selling App
 
-A modern, feature-rich **React Native** mobile application built with **Expo** for buying and selling gadgets. Think smartphones, earbuds, smartwatches, laptops, accessories, and more — all in one sleek marketplace.
+A modern **React Native** mobile application built with **Expo** for buying and selling gadgets — smartphones, earbuds, smartwatches, laptops, accessories, and more.
 
-> ⚠️ **Frontend Only** — This is a fully functional UI/UX prototype. All data is mocked locally via static JSON files. No backend, database, or real payment gateway is involved.
+> ⚠️ **Frontend Only** — All data is mocked locally via static JSON files and AsyncStorage. No backend, database, or real payment gateway involved.
 
 ---
 
@@ -14,10 +14,43 @@ A modern, feature-rich **React Native** mobile application built with **Expo** f
 | Navigation | React Navigation v6 (Stack + Bottom Tabs) |
 | State Management | Zustand / Context API |
 | Mock Data | Static JSON files (local) |
-| Auth Simulation | AsyncStorage (persisted mock login state) |
+| Session | AsyncStorage (persisted mock login + role) |
 | Payments | UI flow only — no real gateway |
-| Local Storage | AsyncStorage (cart, wishlist, orders) |
+| Local Storage | AsyncStorage (cart, wishlist, listings, orders) |
 | Styling | StyleSheet + NativeWind |
+
+---
+
+## 🧭 Core App Flow
+
+```
+App Launch
+    │
+    ▼
+┌─────────────────────┐
+│  Onboarding Screen  │  (first time only)
+└─────────┬───────────┘
+          │
+          ▼
+┌─────────────────────┐
+│    Login Screen     │  ──► Register Screen
+└─────────┬───────────┘
+          │
+          ▼
+┌──────────────────────────┐
+│   Role Selection Screen  │
+│                          │
+│   [ 🛍️ I'm a Buyer ]    │
+│   [ 🏪 I'm a Seller ]   │
+└────────┬─────────────────┘
+         │
+   ┌─────┴──────┐
+   ▼            ▼
+Buyer        Seller
+Dashboard    Dashboard
+```
+
+> The selected role is saved to AsyncStorage. On returning visits, the user is taken directly to their dashboard — skipping role selection.
 
 ---
 
@@ -25,372 +58,330 @@ A modern, feature-rich **React Native** mobile application built with **Expo** f
 
 ```
 gadget-selling-app/
-├── app/                        # Expo Router file-based routing (if using Expo Router)
-│   ├── (auth)/                 # Auth group (unauthenticated routes)
-│   │   ├── welcome.tsx
+├── app/
+│   ├── (auth)/
+│   │   ├── onboarding.tsx       # First-time welcome slides
 │   │   ├── login.tsx
 │   │   ├── register.tsx
-│   │   └── forgot-password.tsx
-│   ├── (tabs)/                 # Main tab navigator (authenticated)
+│   │   └── role-select.tsx      # Buyer or Seller choice
+│   ├── (buyer)/                 # Buyer tab navigator
 │   │   ├── home.tsx
 │   │   ├── explore.tsx
 │   │   ├── cart.tsx
 │   │   ├── wishlist.tsx
 │   │   └── profile.tsx
+│   ├── (seller)/                # Seller tab navigator
+│   │   ├── dashboard.tsx
+│   │   ├── listings.tsx
+│   │   ├── add-product.tsx
+│   │   ├── inquiries.tsx        # Messages/contacts from buyers
+│   │   └── profile.tsx
 │   ├── product/
-│   │   └── [id].tsx            # Dynamic product detail screen
+│   │   └── [id].tsx             # Shared product detail screen
 │   ├── checkout/
-│   │   ├── index.tsx           # Cart review
-│   │   ├── address.tsx         # Delivery address
-│   │   └── payment.tsx         # Payment gateway
+│   │   ├── address.tsx
+│   │   ├── summary.tsx
+│   │   └── payment.tsx
 │   ├── orders/
-│   │   ├── index.tsx           # Order history list
-│   │   └── [id].tsx            # Order detail & tracking
-│   ├── seller/
-│   │   ├── dashboard.tsx       # Seller dashboard
-│   │   ├── add-product.tsx     # List a new gadget
-│   │   └── my-listings.tsx     # Manage existing listings
-│   └── _layout.tsx             # Root layout
-├── components/                 # Reusable UI components
+│   │   ├── index.tsx
+│   │   └── [id].tsx
+│   └── _layout.tsx
+├── components/
 │   ├── ProductCard.tsx
 │   ├── CategoryPill.tsx
 │   ├── SearchBar.tsx
 │   ├── CartItem.tsx
 │   ├── ReviewCard.tsx
-│   ├── RatingStars.tsx
 │   └── ...
-├── store/                      # Global state (Zustand)
+├── store/
+│   ├── useAuthStore.ts          # role + mock user session
 │   ├── useCartStore.ts
-│   ├── useAuthStore.ts
-│   └── useWishlistStore.ts
-├── hooks/                      # Custom hooks
-├── data/                       # Mock/static data (JSON)
+│   ├── useWishlistStore.ts
+│   └── useListingsStore.ts      # seller's products
+├── data/
 │   ├── products.json
 │   ├── categories.json
-│   ├── orders.json
-│   └── users.json
-├── constants/                  # Colors, fonts, sizes
-├── assets/                     # Images, icons, fonts
+│   └── mockOrders.json
+├── constants/
+├── assets/
 ├── app.json
 └── package.json
 ```
 
 ---
 
-## 🧭 Full Navigation & Screen Flow
-
-### 1. 🔐 Auth Flow (Unauthenticated Stack)
-
-> Auth is **fully simulated** — no real validation. A mock user object is persisted in AsyncStorage to maintain login state across app restarts.
+## 🔐 Auth Flow
 
 ```
 App Launch
     │
-    ├── [First Time User] ──────► Welcome / Onboarding Screen
-    │                                   │
-    │                          ┌────────┴────────┐
-    │                          ▼                 ▼
-    │                     Login Screen     Register Screen
-    │                          │                 │
-    │                          └────────┬────────┘
-    │                                   │
-    │                     (Mock user saved to AsyncStorage)
-    │                                   │
-    └── [Returning User] ─────► Auto-login (reads AsyncStorage)
-                                    │
-                                    ▼
-                            Main App (Tab Navigator)
+    ├── No session ──► Onboarding ──► Login / Register ──► Role Selection
+    │
+    └── Session found (AsyncStorage)
+            │
+            ├── role = "buyer"  ──► Buyer Dashboard
+            └── role = "seller" ──► Seller Dashboard
 ```
 
 **Screens:**
-- **Welcome / Onboarding** — 3-slide carousel showcasing app features, "Get Started" CTA
-- **Login** — Email + Password fields (any input accepted), "Forgot Password" link
-- **Register** — Name, Email, Password, Phone Number — stores mock user locally
-- **Forgot Password** — Email input → shows a UI success message only
+
+| Screen | Description |
+|---|---|
+| Onboarding | 3-slide feature carousel, shown only on first launch |
+| Login | Email + Password (mock — any input accepted) |
+| Register | Name, Email, Password, Phone — saves mock user to AsyncStorage |
+| Role Selection | Two cards: **Buyer** or **Seller** — choice saved to AsyncStorage |
 
 ---
 
-### 2. 🏠 Main Tab Navigator (Bottom Tabs)
+## 🛍️ Buyer Flow
+
+### Bottom Tab Navigator (Buyer)
 
 ```
-┌──────────────────────────────────────────────┐
-│           BOTTOM TAB NAVIGATOR               │
-├──────┬───────┬────────┬──────────┬───────────┤
-│ Home │Explore│  Cart  │ Wishlist │  Profile  │
-└──────┴───────┴────────┴──────────┴───────────┘
+┌────────────────────────────────────────────────────┐
+│               BUYER TAB NAVIGATOR                  │
+├─────────┬──────────┬────────┬──────────┬───────────┤
+│  Home   │ Explore  │  Cart  │ Wishlist │  Profile  │
+└─────────┴──────────┴────────┴──────────┴───────────┘
 ```
 
 ---
 
-### 3. 🏠 Home Tab
-
+### 🏠 Home Tab
 ```
 Home Screen
     │
-    ├── Search Bar ─────────────────► Search Results Screen
-    │
-    ├── Banner / Deals Carousel
-    │       └── Tap Banner ─────────► Product Detail Screen
-    │
-    ├── Categories Row (horizontal scroll)
-    │       └── Tap Category ───────► Category Listing Screen
-    │
+    ├── Search Bar ──────────────────► Explore Screen (pre-filtered)
+    ├── Hero Banner Carousel
+    │       └── Tap ─────────────────► Product Detail
+    ├── Categories Row (horizontal)
+    │       └── Tap Category ─────────► Explore Screen (filtered)
     ├── Featured Gadgets Grid
-    │       └── Tap Product ────────► Product Detail Screen
-    │
-    ├── Flash Sale Section
-    │       └── Tap Product ────────► Product Detail Screen
-    │
-    └── Brand Spotlights
-            └── Tap Brand ──────────► Brand Products Screen
+    │       └── Tap ─────────────────► Product Detail
+    └── Flash Sale Section
+            └── Tap ─────────────────► Product Detail
 ```
 
-**Home Screen Elements:**
-- Personalized greeting with user avatar
-- Notification bell (badge for unread)
-- Hero banner carousel (timed or swipeable)
-- Category pills: Phones · Laptops · Audio · Wearables · Accessories · Gaming · Cameras
-- Featured / trending products
-- Flash Sale countdown timer with product cards
-- "Recently Viewed" horizontal list (for returning users)
+**Elements:** Personalised greeting, notification bell, category pills (Phones · Laptops · Audio · Wearables · Accessories · Gaming · Cameras), flash sale countdown timer.
 
 ---
 
-### 4. 🔍 Explore Tab
-
+### 🔍 Explore Tab
 ```
 Explore Screen
     │
     ├── Search Bar (auto-focused)
-    │
-    ├── Filter & Sort Bar
-    │       ├── Category
-    │       ├── Price Range Slider
-    │       ├── Brand
-    │       ├── Rating (4★ and above, etc.)
-    │       └── Sort: Relevance | Price ↑ | Price ↓ | Newest | Popular
-    │
-    ├── Product Grid / List (toggle view)
-    │       └── Tap Product ────────► Product Detail Screen
-    │
-    └── Pagination / Infinite Scroll
+    ├── Filters: Category | Price Range | Brand | Rating
+    ├── Sort: Relevance | Price ↑↓ | Newest | Popular
+    └── Product Grid / List (toggle)
+            └── Tap ─────────────────► Product Detail
 ```
 
 ---
 
-### 5. 📦 Product Detail Screen
-
+### 📦 Product Detail Screen *(shared — navigated from anywhere)*
 ```
-Product Detail Screen
+Product Detail
     │
-    ├── Image Gallery (swipeable, zoom-enabled)
-    ├── Product Name, Brand, Rating
-    ├── Price (with discount % badge)
-    ├── Color / Storage / Variant Selector
+    ├── Image Gallery (swipeable)
+    ├── Name, Brand, Rating, Price + Discount Badge
+    ├── Variant Selector (Color / Storage)
     ├── Quantity Picker
     │
-    ├── [Add to Cart] Button ───────► Cart Screen (with toast notification)
-    ├── [Buy Now] Button ───────────► Checkout Flow
+    ├── [Add to Cart] ───────────────► Cart (toast shown)
+    ├── [Buy Now] ───────────────────► Checkout Flow
     ├── [♡ Wishlist] Toggle
     │
-    ├── Product Description (expandable)
-    ├── Specifications Table
-    │
-    ├── Seller Info Card
-    │       └── Tap ────────────────► Seller Profile Screen
-    │
-    ├── Reviews & Ratings Section
-    │       └── Tap "See All" ──────► All Reviews Screen
-    │
-    └── Related Products (horizontal scroll)
-            └── Tap ─────────────────► Product Detail Screen
+    ├── Description + Specs Table
+    ├── Reviews Section
+    │       └── [See All] ───────────► All Reviews Screen
+    └── Related Products
+            └── Tap ─────────────────► Product Detail
 ```
 
 ---
 
-### 6. 🛒 Cart Tab
-
+### 🛒 Cart Tab
 ```
 Cart Screen
     │
-    ├── Cart Items List
-    │       ├── Quantity +/- controls
-    │       ├── Remove Item
-    │       └── Save to Wishlist
-    │
-    ├── Promo Code / Coupon Input
-    │
-    ├── Price Summary Card
-    │       ├── Subtotal
-    │       ├── Discount
-    │       ├── Delivery Charges
-    │       └── Total Amount
-    │
-    └── [Proceed to Checkout] ──────► Checkout Flow
+    ├── Cart Items (quantity +/-, remove, save to wishlist)
+    ├── Promo Code Input (hardcoded valid codes)
+    ├── Price Summary (subtotal, discount, delivery, total)
+    └── [Proceed to Checkout] ───────► Checkout Flow
 ```
 
 ---
 
-### 7. 💳 Checkout Flow (Stack Navigator)
-
+### 💳 Checkout Flow
 ```
-Cart Screen
-    │
-    ▼
-Step 1: Address Screen
-    ├── Saved Addresses List
-    ├── [Add New Address] ──────────► Add/Edit Address Screen
-    └── [Continue] ─────────────────► Step 2
-    │
-    ▼
-Step 2: Order Summary Screen
-    ├── Review items, address, totals
-    └── [Proceed to Pay] ───────────► Step 3
-    │
-    ▼
-Step 3: Payment Screen (UI only — no real transaction)
-    ├── UPI / Net Banking / Card / COD options (visual selection only)
-    └── [Pay Now] — simulates a brief loading state
-    │
-    └── ✅ Mock Success ──────────────► Order Confirmation Screen
-                                              └── [Track Order] ► Order Tracking
+Cart
+  │
+  ▼
+Step 1 — Address Screen
+    ├── Saved Addresses
+    ├── [+ Add New Address]
+    └── [Continue]
+  │
+  ▼
+Step 2 — Order Summary
+    ├── Review items, address, total
+    └── [Proceed to Pay]
+  │
+  ▼
+Step 3 — Payment Screen (UI only)
+    ├── Select: UPI | Card | Net Banking | COD
+    └── [Pay Now] → brief loading animation
+  │
+  ▼
+✅ Order Confirmation Screen
+    └── [Track My Order] ────────────► Order Tracking
 ```
 
 ---
 
-### 8. ❤️ Wishlist Tab
-
+### ❤️ Wishlist Tab
 ```
 Wishlist Screen
-    │
     ├── Saved Products Grid
-    │       ├── Tap Product ────────► Product Detail Screen
+    │       ├── Tap ─────────────────► Product Detail
     │       └── [Move to Cart]
-    │
-    └── [Share Wishlist] (social share)
+    └── Empty state illustration (if no items)
 ```
 
 ---
 
-### 9. 👤 Profile Tab
-
+### 👤 Buyer Profile Tab
 ```
 Profile Screen
-    │
-    ├── User Avatar + Name + Email
-    │
-    ├── [My Orders] ───────────────► Orders Screen
-    │       └── Tap Order ─────────► Order Detail + Tracking Screen
-    │
-    ├── [My Addresses] ────────────► Address Manager Screen
-    │
-    ├── [Become a Seller] ─────────► Seller Onboarding Screen
-    │       └── (if already seller) ► Seller Dashboard
-    │
-    ├── [Notifications] ───────────► Notification Settings Screen
-    │
-    ├── [Settings]
-    │       ├── Dark Mode Toggle
-    │       ├── Language Preference
-    │       ├── Change Password
-    │       └── Delete Account
-    │
-    ├── [Help & Support] ──────────► Support / FAQ Screen
-    │       └── [Chat with Support]
-    │
-    └── [Logout] ──────────────────► Welcome Screen
+    ├── Avatar, Name, Email
+    ├── [My Orders] ─────────────────► Orders Screen
+    │       └── Tap Order ───────────► Order Detail + Tracking Timeline
+    ├── [My Addresses]
+    ├── [Settings] (Dark Mode, Change Password)
+    ├── [Help & Support]
+    └── [Logout] ────────────────────► Role Selection Screen
 ```
 
 ---
 
-### 10. 🏪 Seller Flow (Stack Navigator)
+## 🏪 Seller Flow
 
-> Seller onboarding is **UI-only** — no real verification or bank integration. All listings and order data are managed in local state.
+### Bottom Tab Navigator (Seller)
 
 ```
-Seller Onboarding (first time)
-    ├── Business Name & Category (form — stored locally)
-    └── "You're now a Seller!" success screen (instant, no real review)
-    │
-    ▼
+┌──────────────────────────────────────────────────────┐
+│                SELLER TAB NAVIGATOR                  │
+├─────────────┬──────────────┬────────────┬────────────┤
+│  Dashboard  │   Listings   │ Inquiries  │  Profile   │
+└─────────────┴──────────────┴────────────┴────────────┘
+```
+
+---
+
+### 📊 Dashboard Tab
+```
 Seller Dashboard
-    ├── Sales Overview (charts with dummy data)
     │
-    ├── [My Listings] ─────────────► Listings Screen
-    │       ├── Active / Inactive toggle (local state)
-    │       ├── Edit Listing ──────► Edit Product Screen
-    │       └── [Add New Product] ─► Add Product Screen
-    │              ├── Product Name, Category, Description
-    │              ├── Price, Discount
-    │              ├── Stock Quantity
-    │              ├── Pick Images (from local device / mock URLs)
-    │              └── Variants (Color, Storage, etc.)
+    ├── Summary Cards
+    │       ├── Total Listings
+    │       ├── Total Inquiries (unread badge)
+    │       └── Mock Revenue (static dummy data)
     │
-    ├── [Mock Orders to Fulfill] ──► Seller Orders Screen
-    │       └── Tap to toggle status (Pending → Shipped → Delivered)
+    ├── Recent Inquiries (preview list)
+    │       └── Tap ─────────────────► Inquiries Tab
     │
-    └── [Earnings Overview] ───────► Static earnings UI screen
+    └── Quick Actions
+            ├── [+ Add New Listing] ─► Add Product Screen
+            └── [View All Listings] ─► Listings Tab
 ```
 
 ---
 
-### 11. 📬 Orders & Tracking
-
-> Orders are created locally on checkout and persisted via AsyncStorage. Tracking stages are simulated with a static timeline UI.
-
+### 📋 Listings Tab
 ```
-Orders Screen
+Listings Screen
     │
-    └── Order Card (status badge: Placed | Packed | Shipped | Delivered | Cancelled)
-            │
-            ▼
-        Order Detail Screen
-            ├── Items Ordered
-            ├── Delivery Address
-            ├── Payment Method (as selected)
-            ├── Simulated Tracking Timeline
-            │       └── Stages: Placed → Confirmed → Packed → Shipped → Delivered
-            ├── [Cancel Order] (updates local state only)
-            └── [Return / Refund] (UI form only)
-```
-
----
-
-### 12. 🔔 Notifications Screen
-
-> Notifications are **static / pre-seeded mock data** — no real push notification service.
-
-```
-Notifications Screen
+    ├── My Products Grid (from local state / mock data)
+    │       ├── [Edit] ──────────────► Edit Product Screen
+    │       │       ├── Edit name, price, description, images, variants
+    │       │       └── [Save Changes] (updates local state)
+    │       │
+    │       └── [Delete] ────────────► Confirm dialog → removes from list
     │
-    ├── Mock Order Updates
-    ├── Flash Sale Alerts (hardcoded)
-    ├── Price Drop Alerts (based on wishlist items in local state)
-    ├── Promotional Offers (static)
-    └── Tap Notification ──────────► Relevant Screen (Product / Order)
+    └── [+ Add New Listing] ─────────► Add Product Screen
+            ├── Product Name
+            ├── Category
+            ├── Price + Discount
+            ├── Description
+            ├── Pick Images (local device / mock URLs)
+            ├── Variants (Color, Storage, etc.)
+            └── [Publish Listing] (adds to local listings state)
 ```
 
 ---
 
-## 🔄 Full App Flow Summary
-
+### 💬 Inquiries Tab
+*(Buyers can tap "Contact Seller" on a product — seller sees the messages here)*
 ```
-┌──────────┐    ┌──────────┐    ┌────────────────────────────────────────────────┐
-│  Launch  │───►│   Auth   │───►│                  Main App                      │
-│  Screen  │    │   Flow   │    │  ┌────────────────────────────────────────────┐ │
-└──────────┘    └──────────┘    │  │            Bottom Tab Navigator             │ │
-                                │  ├─────────┬────────┬───────┬──────┬──────────┤ │
-                                │  │  Home   │Explore │ Cart  │ ♡   │ Profile  │ │
-                                │  └────┬────┴───┬────┴───┬───┴──┬───┴────┬─────┘ │
-                                │       │        │        │      │        │        │
-                                │  Products  Products  Checkout Orders  Seller    │
-                                │  Detail    Listing   Flow    Track   Dashboard  │
-                                └──────────────────────────────────────────────────┘
+Inquiries Screen
+    │
+    ├── List of buyer inquiries (mock data + any submitted via product page)
+    │       ├── Buyer name, product they asked about, message preview
+    │       └── Tap ─────────────────► Inquiry Detail Screen
+    │                                       ├── Full message
+    │                                       ├── Product snapshot
+    │                                       └── [Reply] (UI only — no real messaging)
+    │
+    └── Unread badge shown on tab icon
 ```
 
 ---
 
-## 🎨 Design System (Planned)
+### 👤 Seller Profile Tab
+```
+Profile Screen
+    ├── Avatar, Business Name, Email
+    ├── [Settings] (Dark Mode, Change Password)
+    ├── [Help & Support]
+    └── [Logout] ────────────────────► Role Selection Screen
+```
+
+---
+
+## 🔄 Complete App Flow Summary
+
+```
+┌─────────────┐
+│ App Launch  │
+└──────┬──────┘
+       │
+  AsyncStorage?
+  ┌────┴─────────────────────┐
+  │ No session               │ Session exists
+  ▼                          │
+Onboarding                   ├── role=buyer  ──► Buyer Tabs
+  │                          └── role=seller ──► Seller Tabs
+  ▼
+Login / Register
+  │
+  ▼
+Role Selection
+  │
+  ├── Buyer  ──────────────► [ Home | Explore | Cart | Wishlist | Profile ]
+  │                                │
+  │                         Product Detail ──► Checkout ──► Order Confirmation
+  │
+  └── Seller ──────────────► [ Dashboard | Listings | Inquiries | Profile ]
+                                     │
+                              Add / Edit / Delete Listings
+                              View & Reply to Buyer Inquiries
+```
+
+---
+
+## 🎨 Design System
 
 | Token | Value |
 |---|---|
@@ -431,40 +422,32 @@ npx expo start --web
 
 ---
 
-## 📋 Key Feature Checklist
+## 📋 Feature Checklist
 
-### Buyer Features
-- [x] Browse & search gadgets (mock JSON data)
-- [x] Category & brand filtering (client-side)
-- [x] Product detail with image gallery
-- [x] Add to cart & wishlist (AsyncStorage persisted)
-- [x] Apply coupons & promo codes (hardcoded codes, UI feedback)
-- [x] Multi-step checkout UI (address → summary → payment)
-- [x] Simulated order placement & order history (AsyncStorage)
-- [x] Static order tracking timeline UI
-- [x] Write & view reviews (stored locally)
+### Buyer
+- [ ] Onboarding carousel
+- [ ] Mock login / register
+- [ ] Role selection (saved to AsyncStorage)
+- [ ] Home feed (banners, categories, featured, flash sale)
+- [ ] Explore with filters & sort
+- [ ] Product detail (gallery, variants, specs, reviews)
+- [ ] Add to cart & wishlist (AsyncStorage)
+- [ ] Promo code (hardcoded)
+- [ ] Multi-step checkout UI
+- [ ] Order confirmation + tracking timeline
 
-### Seller Features
-- [x] Seller onboarding UI (instant, no real verification)
-- [x] Add / edit / delete product listings (local state)
-- [x] Manage stock & variants (UI only)
-- [x] View & toggle mock order statuses
-- [x] Sales analytics UI (dummy chart data)
-- [x] Earnings overview screen (static UI)
+### Seller
+- [ ] Seller dashboard (summary cards, quick actions)
+- [ ] Add / Edit / Delete listings (local state)
+- [ ] Inquiries list + detail view
+- [ ] Unread inquiry badge
 
-### Platform Features
-- [x] Simulated auth with AsyncStorage session persistence
-- [x] Dark mode support
-- [x] Smooth animations (React Native Reanimated)
-- [x] Fully offline — zero network dependency
-- [x] Persistent cart, wishlist & orders via AsyncStorage
-- [x] Static notification feed
-
----
-
-## 🤝 Contributing
-
-This project is currently in early development. No external contributions yet. Stay tuned.
+### Platform
+- [ ] Role-based navigation (buyer vs seller)
+- [ ] AsyncStorage session persistence
+- [ ] Dark mode
+- [ ] Smooth animations (React Native Reanimated)
+- [ ] Fully offline — zero network dependency
 
 ---
 
