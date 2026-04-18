@@ -1,0 +1,704 @@
+[
+  {
+    "id": "p001",
+    "name": "Samsung Galaxy S24 Ultra",
+    "brand": "Samsung",
+    "category": "Phones",
+    "price": 129999,
+    "originalPrice": 149999,
+    "discount": 13,
+    "rating": 4.8,
+    "reviewCount": 1240,
+    "stock": 15,
+    "isFeatured": true,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1610945264803-c22b62d2a7b3?w=600&q=80",
+      "https://images.unsplash.com/photo-1606663889134-b1dedb5ed8b7?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Titanium Black", "Titanium Violet", "Titanium Yellow"],
+      "storage": ["256GB", "512GB", "1TB"]
+    },
+    "description": "The Galaxy S24 Ultra redefines what a smartphone can do with its built-in S Pen, 200MP camera, and Snapdragon 8 Gen 3 processor.",
+    "specs": {
+      "Display": "6.8\" QHD+ Dynamic AMOLED 2X, 120Hz",
+      "Processor": "Snapdragon 8 Gen 3",
+      "RAM": "12GB",
+      "Battery": "5000mAh",
+      "Camera": "200MP + 12MP + 10MP + 50MP",
+      "OS": "Android 14"
+    },
+    "sellerId": "s001",
+    "sellerName": "TechMart"
+  },
+  {
+    "id": "p002",
+    "name": "Apple iPhone 15 Pro Max",
+    "brand": "Apple",
+    "category": "Phones",
+    "price": 159900,
+    "originalPrice": 174900,
+    "discount": 9,
+    "rating": 4.9,
+    "reviewCount": 2890,
+    "stock": 8,
+    "isFeatured": true,
+    "isFlashSale": true,
+    "images": [
+      "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&q=80",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Natural Titanium", "Blue Titanium", "White Titanium", "Black Titanium"],
+      "storage": ["256GB", "512GB", "1TB"]
+    },
+    "description": "iPhone 15 Pro Max features a titanium design, A17 Pro chip, and a 5x telephoto camera system.",
+    "specs": {
+      "Display": "6.7\" Super Retina XDR, ProMotion 120Hz",
+      "Processor": "Apple A17 Pro",
+      "RAM": "8GB",
+      "Battery": "4422mAh",
+      "Camera": "48MP + 12MP + 12MP",
+      "OS": "iOS 17"
+    },
+    "sellerId": "s002",
+    "sellerName": "iZone"
+  },
+  {
+    "id": "p003",
+    "name": "Sony WH-1000XM5 Headphones",
+    "brand": "Sony",
+    "category": "Audio",
+    "price": 24990,
+    "originalPrice": 34990,
+    "discount": 29,
+    "rating": 4.7,
+    "reviewCount": 876,
+    "stock": 23,
+    "isFeatured": true,
+    "isFlashSale": true,
+    "images": [
+      "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600&q=80",
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Midnight Black", "Platinum Silver"]
+    },
+    "description": "Industry-leading noise cancellation with up to 30 hours of battery life. Crystal clear hands-free calling.",
+    "specs": {
+      "Driver": "30mm",
+      "Frequency": "4Hz–40,000Hz",
+      "Battery": "30 hours",
+      "Connectivity": "Bluetooth 5.2",
+      "NoiseCancellation": "Yes — Dual Processor",
+      "Weight": "250g"
+    },
+    "sellerId": "s001",
+    "sellerName": "TechMart"
+  },
+  {
+    "id": "p004",
+    "name": "MacBook Air M3",
+    "brand": "Apple",
+    "category": "Laptops",
+    "price": 114900,
+    "originalPrice": 124900,
+    "discount": 8,
+    "rating": 4.9,
+    "reviewCount": 543,
+    "stock": 12,
+    "isFeatured": true,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1611186871525-6d5e44a5f63e?w=600&q=80",
+      "https://images.unsplash.com/photo-1602080858428-57174f9431cf?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Midnight", "Starlight", "Space Gray", "Sky Blue"],
+      "storage": ["256GB SSD", "512GB SSD", "1TB SSD"]
+    },
+    "description": "MacBook Air with M3 chip delivers up to 18 hours of battery life and blazing fast performance in an impossibly thin design.",
+    "specs": {
+      "Display": "13.6\" Liquid Retina",
+      "Processor": "Apple M3",
+      "RAM": "8GB / 16GB",
+      "Storage": "256GB–1TB SSD",
+      "Battery": "18 hours",
+      "Weight": "1.24 kg"
+    },
+    "sellerId": "s002",
+    "sellerName": "iZone"
+  },
+  {
+    "id": "p005",
+    "name": "Apple Watch Series 9",
+    "brand": "Apple",
+    "category": "Wearables",
+    "price": 41900,
+    "originalPrice": 45900,
+    "discount": 9,
+    "rating": 4.8,
+    "reviewCount": 1120,
+    "stock": 30,
+    "isFeatured": false,
+    "isFlashSale": true,
+    "images": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80",
+      "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Midnight", "Starlight", "Product Red", "Silver"],
+      "size": ["41mm", "45mm"]
+    },
+    "description": "Apple Watch Series 9 with the new S9 chip, Double Tap gesture, and all-day battery life.",
+    "specs": {
+      "Display": "Always-On Retina LTPO OLED",
+      "Processor": "Apple S9",
+      "Battery": "18 hours",
+      "Water Resistance": "50m",
+      "Health Sensors": "ECG, Blood Oxygen, Temperature",
+      "Connectivity": "LTE + Wi-Fi + Bluetooth"
+    },
+    "sellerId": "s003",
+    "sellerName": "GadgetHub"
+  },
+  {
+    "id": "p006",
+    "name": "Logitech MX Master 3S",
+    "brand": "Logitech",
+    "category": "Accessories",
+    "price": 9499,
+    "originalPrice": 12999,
+    "discount": 27,
+    "rating": 4.6,
+    "reviewCount": 445,
+    "stock": 50,
+    "isFeatured": false,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&q=80",
+      "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Graphite", "Pale Grey"]
+    },
+    "description": "The MX Master 3S is the master of mice — with an 8K DPI sensor, near-silent clicks, and MagSpeed electromagnetic scroll.",
+    "specs": {
+      "Sensor": "Darkfield 8000 DPI",
+      "Buttons": "7",
+      "Battery": "70 days",
+      "Connectivity": "Bluetooth + USB-C",
+      "Compatibility": "Windows, Mac, Linux"
+    },
+    "sellerId": "s004",
+    "sellerName": "WorkTech"
+  },
+  {
+    "id": "p007",
+    "name": "Dell XPS 15",
+    "brand": "Dell",
+    "category": "Laptops",
+    "price": 149990,
+    "originalPrice": 169990,
+    "discount": 12,
+    "rating": 4.7,
+    "reviewCount": 321,
+    "stock": 7,
+    "isFeatured": true,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&q=80",
+      "https://images.unsplash.com/photo-1544099858-75f46f8c25b5?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Platinum Silver", "Frost"],
+      "storage": ["512GB SSD", "1TB SSD"]
+    },
+    "description": "The XPS 15 combines a stunning 15.6\" OLED display with 13th Gen Intel Core processors and NVIDIA GeForce RTX 4060.",
+    "specs": {
+      "Display": "15.6\" 3.5K OLED 60Hz",
+      "Processor": "Intel Core i7-13700H",
+      "RAM": "16GB DDR5",
+      "Storage": "512GB NVMe SSD",
+      "GPU": "NVIDIA RTX 4060 8GB",
+      "Battery": "86Wh"
+    },
+    "sellerId": "s004",
+    "sellerName": "WorkTech"
+  },
+  {
+    "id": "p008",
+    "name": "Samsung Galaxy Buds3 Pro",
+    "brand": "Samsung",
+    "category": "Audio",
+    "price": 17999,
+    "originalPrice": 22999,
+    "discount": 22,
+    "rating": 4.5,
+    "reviewCount": 654,
+    "stock": 40,
+    "isFeatured": false,
+    "isFlashSale": true,
+    "images": [
+      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600&q=80",
+      "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Graphite", "Silver"]
+    },
+    "description": "Galaxy Buds3 Pro deliver Hi-Fi sound, intelligent ANC, and seamless Galaxy ecosystem integration.",
+    "specs": {
+      "Driver": "10.5mm woofer + 6.1mm tweeter",
+      "ANC": "Yes — Intelligent ANC",
+      "Battery": "6h + 21h (case)",
+      "Connectivity": "Bluetooth 5.4",
+      "Water Resistance": "IPX7",
+      "Codec": "SSC HiFi, AAC, SBC"
+    },
+    "sellerId": "s001",
+    "sellerName": "TechMart"
+  },
+  {
+    "id": "p009",
+    "name": "GoPro HERO13 Black",
+    "brand": "GoPro",
+    "category": "Cameras",
+    "price": 39990,
+    "originalPrice": 44990,
+    "discount": 11,
+    "rating": 4.6,
+    "reviewCount": 234,
+    "stock": 18,
+    "isFeatured": false,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1586996292898-71f0b90c6a7b?w=600&q=80",
+      "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Black"]
+    },
+    "description": "HERO13 Black shoots stunning 5.3K60 video, features HyperSmooth 6.0 stabilization, and is waterproof to 10m.",
+    "specs": {
+      "Video": "5.3K60 / 4K120 / 2.7K240",
+      "Photo": "27MP",
+      "Stabilization": "HyperSmooth 6.0",
+      "Battery": "1720mAh (Enduro)",
+      "Water Resistance": "10m",
+      "Lens": "Ultra Wide 177°"
+    },
+    "sellerId": "s003",
+    "sellerName": "GadgetHub"
+  },
+  {
+    "id": "p010",
+    "name": "PlayStation DualSense Controller",
+    "brand": "Sony",
+    "category": "Gaming",
+    "price": 6499,
+    "originalPrice": 7499,
+    "discount": 13,
+    "rating": 4.8,
+    "reviewCount": 1890,
+    "stock": 35,
+    "isFeatured": false,
+    "isFlashSale": true,
+    "images": [
+      "https://images.unsplash.com/photo-1593118247619-e2d6f056869e?w=600&q=80",
+      "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["White", "Midnight Black", "Cosmic Red", "Starlight Blue", "Nova Pink"]
+    },
+    "description": "The DualSense wireless controller features haptic feedback, adaptive triggers, and a built-in microphone.",
+    "specs": {
+      "Connectivity": "Bluetooth 5.1 + USB-C",
+      "Battery": "1560mAh",
+      "Features": "Haptic Feedback, Adaptive Triggers",
+      "Speaker": "Mono",
+      "Touchpad": "Yes",
+      "Compatibility": "PS5, PC"
+    },
+    "sellerId": "s003",
+    "sellerName": "GadgetHub"
+  },
+  {
+    "id": "p011",
+    "name": "OnePlus 12",
+    "brand": "OnePlus",
+    "category": "Phones",
+    "price": 64999,
+    "originalPrice": 69999,
+    "discount": 7,
+    "rating": 4.6,
+    "reviewCount": 678,
+    "stock": 22,
+    "isFeatured": false,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Silky Black", "Flowy Emerald"],
+      "storage": ["256GB", "512GB"]
+    },
+    "description": "OnePlus 12 brings Snapdragon 8 Gen 3, 100W SUPERVOOC charging and a Hasselblad co-tuned triple camera.",
+    "specs": {
+      "Display": "6.82\" LTPO 2K AMOLED 120Hz",
+      "Processor": "Snapdragon 8 Gen 3",
+      "RAM": "12GB / 16GB",
+      "Battery": "5400mAh",
+      "Charging": "100W SUPERVOOC",
+      "Camera": "50MP + 48MP + 64MP"
+    },
+    "sellerId": "s001",
+    "sellerName": "TechMart"
+  },
+  {
+    "id": "p012",
+    "name": "Anker 757 PowerStation",
+    "brand": "Anker",
+    "category": "Accessories",
+    "price": 34999,
+    "originalPrice": 42999,
+    "discount": 19,
+    "rating": 4.7,
+    "reviewCount": 312,
+    "stock": 9,
+    "isFeatured": false,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Black"]
+    },
+    "description": "757 PowerStation is a 1229Wh portable power station with a 1500W AC inverter — perfect for outdoor and backup power.",
+    "specs": {
+      "Capacity": "1229Wh",
+      "AC Output": "1500W (surge 2400W)",
+      "Ports": "4x AC, 3x USB-A, 2x USB-C, 1x Carport",
+      "Charging": "4 ways (solar, car, AC, generator)",
+      "Weight": "10.9 kg",
+      "Recharge Time": "1.5h (1000W AC)"
+    },
+    "sellerId": "s004",
+    "sellerName": "WorkTech"
+  },
+  {
+    "id": "p013",
+    "name": "Garmin Fenix 7 Pro",
+    "brand": "Garmin",
+    "category": "Wearables",
+    "price": 79999,
+    "originalPrice": 89999,
+    "discount": 11,
+    "rating": 4.8,
+    "reviewCount": 189,
+    "stock": 14,
+    "isFeatured": true,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Sapphire Carbon Gray", "Silver", "Black"],
+      "size": ["42mm", "47mm", "51mm"]
+    },
+    "description": "Fenix 7 Pro is a multisport GPS watch with solar charging, advanced training metrics, and built-in flashlight.",
+    "specs": {
+      "Display": "1.4\" MIP with Solar",
+      "Battery": "22 days (smartwatch) / 89 days (expedition)",
+      "GPS": "Multi-band GNSS",
+      "Sensors": "HR, SpO2, Pulse Ox, Temperature",
+      "Water Resistance": "100m",
+      "OS": "Garmin OS"
+    },
+    "sellerId": "s003",
+    "sellerName": "GadgetHub"
+  },
+  {
+    "id": "p014",
+    "name": "Sony Alpha A7 IV",
+    "brand": "Sony",
+    "category": "Cameras",
+    "price": 249990,
+    "originalPrice": 274990,
+    "discount": 9,
+    "rating": 4.9,
+    "reviewCount": 98,
+    "stock": 5,
+    "isFeatured": true,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Black"]
+    },
+    "description": "The Alpha 7 IV is a game-changing camera with 33MP full-frame sensor, advanced AF, and 4K 60fps video.",
+    "specs": {
+      "Sensor": "33MP Full-Frame BSI CMOS",
+      "Video": "4K 60fps, 10-bit 4:2:2",
+      "AF Points": "759 phase-detect + 425 contrast",
+      "ISO": "100–51200 (expandable)",
+      "Stabilization": "5.5-stop IBIS",
+      "Battery": "580 shots per charge"
+    },
+    "sellerId": "s003",
+    "sellerName": "GadgetHub"
+  },
+  {
+    "id": "p015",
+    "name": "Samsung Galaxy Tab S9 Ultra",
+    "brand": "Samsung",
+    "category": "Accessories",
+    "price": 109999,
+    "originalPrice": 124999,
+    "discount": 12,
+    "rating": 4.7,
+    "reviewCount": 432,
+    "stock": 11,
+    "isFeatured": false,
+    "isFlashSale": true,
+    "images": [
+      "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Graphite", "Beige"],
+      "storage": ["256GB", "512GB"]
+    },
+    "description": "Galaxy Tab S9 Ultra features a massive 14.6\" Dynamic AMOLED 2X display and the included S Pen.",
+    "specs": {
+      "Display": "14.6\" Dynamic AMOLED 2X 120Hz",
+      "Processor": "Snapdragon 8 Gen 2",
+      "RAM": "12GB",
+      "Battery": "11200mAh",
+      "Camera": "13MP + 8MP front",
+      "OS": "Android 13, One UI 5.1"
+    },
+    "sellerId": "s001",
+    "sellerName": "TechMart"
+  },
+  {
+    "id": "p016",
+    "name": "Razer BlackShark V2 Pro",
+    "brand": "Razer",
+    "category": "Gaming",
+    "price": 18999,
+    "originalPrice": 22999,
+    "discount": 17,
+    "rating": 4.6,
+    "reviewCount": 567,
+    "stock": 26,
+    "isFeatured": false,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Black", "White"]
+    },
+    "description": "BlackShark V2 Pro delivers THX Spatial Audio, Razer TriForce Titanium 50mm drivers, and 70h battery life.",
+    "specs": {
+      "Drivers": "50mm Razer TriForce Titanium",
+      "Frequency": "12Hz–28,000Hz",
+      "Microphone": "Detachable HyperClear",
+      "Battery": "70 hours",
+      "Connectivity": "2.4GHz HyperSpeed + Bluetooth",
+      "Weight": "320g"
+    },
+    "sellerId": "s004",
+    "sellerName": "WorkTech"
+  },
+  {
+    "id": "p017",
+    "name": "Kindle Paperwhite Signature Edition",
+    "brand": "Amazon",
+    "category": "Accessories",
+    "price": 17999,
+    "originalPrice": 19999,
+    "discount": 10,
+    "rating": 4.7,
+    "reviewCount": 2340,
+    "stock": 60,
+    "isFeatured": false,
+    "isFlashSale": true,
+    "images": [
+      "https://images.unsplash.com/photo-1544716278-e513176f20b5?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Black", "Agave Green"]
+    },
+    "description": "The Kindle Paperwhite Signature Edition features auto-adjusting front light, fast USB-C charging, and wireless charging.",
+    "specs": {
+      "Display": "6.8\" 300ppi Paperwhite",
+      "Storage": "32GB",
+      "Battery": "10 weeks",
+      "Water Resistance": "IPX8",
+      "Connectivity": "Wi-Fi",
+      "Weight": "209g"
+    },
+    "sellerId": "s002",
+    "sellerName": "iZone"
+  },
+  {
+    "id": "p018",
+    "name": "Xiaomi 14 Ultra",
+    "brand": "Xiaomi",
+    "category": "Phones",
+    "price": 99999,
+    "originalPrice": 109999,
+    "discount": 9,
+    "rating": 4.7,
+    "reviewCount": 345,
+    "stock": 16,
+    "isFeatured": false,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1610945264803-c22b62d2a7b3?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Black", "White", "Titanium"],
+      "storage": ["512GB"]
+    },
+    "description": "Xiaomi 14 Ultra with Leica Vario-Summilux quad camera system and Snapdragon 8 Gen 3 pushes mobile photography to new limits.",
+    "specs": {
+      "Display": "6.73\" LTPO AMOLED 1–120Hz",
+      "Processor": "Snapdragon 8 Gen 3",
+      "RAM": "16GB",
+      "Battery": "5000mAh",
+      "Charging": "90W wired + 80W wireless",
+      "Camera": "50MP + 50MP + 50MP + 50MP (Leica)"
+    },
+    "sellerId": "s001",
+    "sellerName": "TechMart"
+  },
+  {
+    "id": "p019",
+    "name": "ASUS ROG Zephyrus G14",
+    "brand": "ASUS",
+    "category": "Gaming",
+    "price": 139990,
+    "originalPrice": 154990,
+    "discount": 10,
+    "rating": 4.8,
+    "reviewCount": 210,
+    "stock": 9,
+    "isFeatured": true,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Eclipse Gray", "Platinum White"],
+      "storage": ["512GB SSD", "1TB SSD"]
+    },
+    "description": "The ROG Zephyrus G14 is an ultra-compact gaming laptop with AMD Ryzen 9 and NVIDIA RTX 4070.",
+    "specs": {
+      "Display": "14\" QHD+ OLED 165Hz",
+      "Processor": "AMD Ryzen 9 8945HS",
+      "RAM": "32GB DDR5",
+      "Storage": "1TB PCIe 4.0 SSD",
+      "GPU": "NVIDIA RTX 4070 8GB",
+      "Battery": "73Wh, up to 10h"
+    },
+    "sellerId": "s004",
+    "sellerName": "WorkTech"
+  },
+  {
+    "id": "p020",
+    "name": "Apple AirPods Pro (2nd Gen)",
+    "brand": "Apple",
+    "category": "Audio",
+    "price": 24900,
+    "originalPrice": 26900,
+    "discount": 7,
+    "rating": 4.8,
+    "reviewCount": 3240,
+    "stock": 45,
+    "isFeatured": true,
+    "isFlashSale": true,
+    "images": [
+      "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600&q=80",
+      "https://images.unsplash.com/photo-1588423771073-b8903febb85b?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["White"]
+    },
+    "description": "AirPods Pro (2nd gen) feature up to 2x more Active Noise Cancellation and Adaptive Transparency.",
+    "specs": {
+      "Chip": "Apple H2",
+      "ANC": "Adaptive ANC",
+      "Battery": "6h + 30h (case)",
+      "Water Resistance": "IPX4",
+      "Connectivity": "Bluetooth 5.3",
+      "Case Charging": "MagSafe + Lightning + Qi2"
+    },
+    "sellerId": "s002",
+    "sellerName": "iZone"
+  },
+  {
+    "id": "p021",
+    "name": "Fitbit Charge 6",
+    "brand": "Fitbit",
+    "category": "Wearables",
+    "price": 14999,
+    "originalPrice": 17999,
+    "discount": 17,
+    "rating": 4.4,
+    "reviewCount": 876,
+    "stock": 38,
+    "isFeatured": false,
+    "isFlashSale": false,
+    "images": [
+      "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Coral/Champagne Gold", "Obsidian/Black", "Porcelain/Soft Gold"]
+    },
+    "description": "Charge 6 tracks your health with ECG, skin temperature, and built-in Google Maps integration.",
+    "specs": {
+      "Display": "AMOLED",
+      "Battery": "7 days",
+      "Sensors": "Heart Rate, SpO2, ECG, EDA",
+      "GPS": "Built-in",
+      "Water Resistance": "50m",
+      "OS": "Fitbit OS"
+    },
+    "sellerId": "s003",
+    "sellerName": "GadgetHub"
+  },
+  {
+    "id": "p022",
+    "name": "Anker Nano 65W GaN Charger",
+    "brand": "Anker",
+    "category": "Accessories",
+    "price": 2499,
+    "originalPrice": 3499,
+    "discount": 29,
+    "rating": 4.7,
+    "reviewCount": 5430,
+    "stock": 100,
+    "isFeatured": false,
+    "isFlashSale": true,
+    "images": [
+      "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=600&q=80"
+    ],
+    "variants": {
+      "colors": ["Black", "White", "Pink"]
+    },
+    "description": "Anker Nano 65W is a foldable GaN charger smaller than a credit card that charges laptops, phones, and tablets.",
+    "specs": {
+      "Output": "65W max",
+      "Ports": "1x USB-C",
+      "Technology": "GaN II",
+      "Foldable Plug": "Yes",
+      "Compatibility": "MacBook, iPad, iPhone, Android",
+      "Weight": "100g"
+    },
+    "sellerId": "s004",
+    "sellerName": "WorkTech"
+  }
+]

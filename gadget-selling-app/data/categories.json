@@ -1,0 +1,9 @@
+[
+  { "id": "cat1", "name": "Phones", "icon": "phone-portrait-outline", "color": "#6C5CE7" },
+  { "id": "cat2", "name": "Laptops", "icon": "laptop-outline", "color": "#00CEC9" },
+  { "id": "cat3", "name": "Audio", "icon": "headset-outline", "color": "#FD79A8" },
+  { "id": "cat4", "name": "Wearables", "icon": "watch-outline", "color": "#FDCB6E" },
+  { "id": "cat5", "name": "Accessories", "icon": "hardware-chip-outline", "color": "#74B9FF" },
+  { "id": "cat6", "name": "Gaming", "icon": "game-controller-outline", "color": "#55EFC4" },
+  { "id": "cat7", "name": "Cameras", "icon": "camera-outline", "color": "#E17055" }
+]

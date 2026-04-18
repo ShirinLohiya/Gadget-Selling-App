@@ -1,0 +1,96 @@
+[
+  {
+    "id": "ord001",
+    "userId": "mock_user",
+    "createdAt": "2026-04-10T10:30:00Z",
+    "status": "delivered",
+    "total": 154990,
+    "discount": 15000,
+    "delivery": 0,
+    "promoCode": "GADGET10",
+    "paymentMethod": "UPI",
+    "address": {
+      "name": "Shirin Lohiya",
+      "line1": "42, Tech Park",
+      "line2": "Whitefield",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pincode": "560066",
+      "phone": "9988776655"
+    },
+    "items": [
+      { "productId": "p004", "name": "MacBook Air M3", "qty": 1, "price": 114900, "image": "https://images.unsplash.com/photo-1611186871525-6d5e44a5f63e?w=300&q=80" },
+      { "productId": "p020", "name": "Apple AirPods Pro (2nd Gen)", "qty": 1, "price": 24900, "image": "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=300&q=80" }
+    ],
+    "tracking": [
+      { "status": "Order Placed", "timestamp": "2026-04-10T10:30:00Z", "done": true },
+      { "status": "Payment Confirmed", "timestamp": "2026-04-10T10:32:00Z", "done": true },
+      { "status": "Packed", "timestamp": "2026-04-10T15:00:00Z", "done": true },
+      { "status": "Shipped", "timestamp": "2026-04-11T09:00:00Z", "done": true },
+      { "status": "Out for Delivery", "timestamp": "2026-04-12T08:00:00Z", "done": true },
+      { "status": "Delivered", "timestamp": "2026-04-12T14:30:00Z", "done": true }
+    ]
+  },
+  {
+    "id": "ord002",
+    "userId": "mock_user",
+    "createdAt": "2026-04-16T14:00:00Z",
+    "status": "shipped",
+    "total": 25490,
+    "discount": 5000,
+    "delivery": 99,
+    "promoCode": null,
+    "paymentMethod": "Credit Card",
+    "address": {
+      "name": "Shirin Lohiya",
+      "line1": "42, Tech Park",
+      "line2": "Whitefield",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pincode": "560066",
+      "phone": "9988776655"
+    },
+    "items": [
+      { "productId": "p003", "name": "Sony WH-1000XM5", "qty": 1, "price": 24990, "image": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&q=80" }
+    ],
+    "tracking": [
+      { "status": "Order Placed", "timestamp": "2026-04-16T14:00:00Z", "done": true },
+      { "status": "Payment Confirmed", "timestamp": "2026-04-16T14:02:00Z", "done": true },
+      { "status": "Packed", "timestamp": "2026-04-16T20:00:00Z", "done": true },
+      { "status": "Shipped", "timestamp": "2026-04-17T10:00:00Z", "done": true },
+      { "status": "Out for Delivery", "timestamp": "2026-04-18T08:00:00Z", "done": false },
+      { "status": "Delivered", "timestamp": null, "done": false }
+    ]
+  },
+  {
+    "id": "ord003",
+    "userId": "mock_user",
+    "createdAt": "2026-04-18T08:00:00Z",
+    "status": "processing",
+    "total": 6499,
+    "discount": 1000,
+    "delivery": 49,
+    "promoCode": null,
+    "paymentMethod": "COD",
+    "address": {
+      "name": "Shirin Lohiya",
+      "line1": "42, Tech Park",
+      "line2": "Whitefield",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "pincode": "560066",
+      "phone": "9988776655"
+    },
+    "items": [
+      { "productId": "p010", "name": "PlayStation DualSense Controller", "qty": 1, "price": 6499, "image": "https://images.unsplash.com/photo-1593118247619-e2d6f056869e?w=300&q=80" }
+    ],
+    "tracking": [
+      { "status": "Order Placed", "timestamp": "2026-04-18T08:00:00Z", "done": true },
+      { "status": "Payment Confirmed", "timestamp": "2026-04-18T08:01:00Z", "done": true },
+      { "status": "Packed", "timestamp": null, "done": false },
+      { "status": "Shipped", "timestamp": null, "done": false },
+      { "status": "Out for Delivery", "timestamp": null, "done": false },
+      { "status": "Delivered", "timestamp": null, "done": false }
+    ]
+  }
+]
