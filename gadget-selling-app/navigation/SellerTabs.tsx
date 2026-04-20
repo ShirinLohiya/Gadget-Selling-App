@@ -7,10 +7,10 @@ import { useListingsStore } from '../store/useListingsStore';
 
 // Seller Screens
 import SellerDashboardScreen from '../screens/seller/SellerDashboardScreen';
-import ListingsScreen from '../screens/seller/ListingsScreen';
-import InquiriesScreen from '../screens/seller/InquiriesScreen';
+import ListingsStack from '../navigation/ListingsStack';
+import InquiriesScreen from '../screens/seller/Inquiries';
 import SellerProfileScreen from '../screens/seller/SellerProfileScreen';
-
+//hhhhhhhhh
 export type SellerTabParamList = {
   Dashboard: undefined;
   Listings: undefined;
@@ -34,9 +34,9 @@ export default function SellerTabs() {
         tabBarLabelStyle: styles.tabLabel,
         tabBarIcon: ({ color, focused }) => {
           const icons: Record<string, { active: keyof typeof Ionicons.glyphMap; inactive: keyof typeof Ionicons.glyphMap }> = {
-            Dashboard:     { active: 'bar-chart', inactive: 'bar-chart-outline' },
-            Listings:      { active: 'list', inactive: 'list-outline' },
-            Inquiries:     { active: 'chatbubbles', inactive: 'chatbubbles-outline' },
+            Dashboard: { active: 'bar-chart', inactive: 'bar-chart-outline' },
+            Listings: { active: 'list', inactive: 'list-outline' },
+            Inquiries: { active: 'chatbubbles', inactive: 'chatbubbles-outline' },
             SellerProfile: { active: 'person', inactive: 'person-outline' },
           };
           const icon = icons[route.name];
@@ -49,7 +49,7 @@ export default function SellerTabs() {
       })}
     >
       <Tab.Screen name="Dashboard" component={SellerDashboardScreen} />
-      <Tab.Screen name="Listings" component={ListingsScreen} />
+      <Tab.Screen name="Listings" component={ListingsStack} />
       <Tab.Screen
         name="Inquiries"
         component={InquiriesScreen}
@@ -58,11 +58,13 @@ export default function SellerTabs() {
           tabBarBadgeStyle: styles.badge,
         }}
       />
+
       <Tab.Screen
         name="SellerProfile"
         component={SellerProfileScreen}
         options={{ tabBarLabel: 'Profile' }}
       />
+
     </Tab.Navigator>
   );
 }
