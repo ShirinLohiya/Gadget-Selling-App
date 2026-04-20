@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity, StyleSheet,
   TextInput, KeyboardAvoidingView, Platform, ScrollView,
-} from 'react-native';
+} from 'react-native';  
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useListingsStore } from '../../store/useListingsStore';
