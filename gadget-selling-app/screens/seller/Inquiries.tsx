@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity, StyleSheet,
   TextInput, KeyboardAvoidingView, Platform, ScrollView,
-} from 'react-native';  
-import { useRouter } from 'expo-router';
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useListingsStore } from '../../store/useListingsStore';
 
@@ -20,8 +19,6 @@ const Colors = {
 };
 
 export default function Inquiries() {
-  const router = useRouter();
-
   // ✅ Correct store usage
   const inquiries = useListingsStore((s) => s.inquiries);
   const markAsRead = useListingsStore((s) => s.markInquiryRead);
