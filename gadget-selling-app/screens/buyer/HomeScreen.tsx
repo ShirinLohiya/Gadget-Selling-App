@@ -9,15 +9,28 @@ import products from '../../data/products.json';
 import categories from '../../data/categories.json';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useCartStore } from '../../store/useCartStore';
+import { useWishlistStore } from '../../store/useWishlistStore';
 
 // ─── Person B's screen — scaffold provided by Person E ───
 export default function HomeScreen({ navigation }: any) {
   const user = useAuthStore((s) => s.user);
   const [search, setSearch] = React.useState('');
+  const filteredProducts = products.filter((p) =>
+  p.name.toLowerCase().includes(search.toLowerCase())
+);
   const [activeCategory, setActiveCategory] = React.useState('All');
   const addItem = useCartStore((s) => s.addItem);
+  const { toggle } = useWishlistStore();
 
-  const featured = products.filter((p) => p.isFeatured).slice(0, 6);
+  const filtered = products
+  .filter((p) =>
+    activeCategory === 'All' ? true : p.category === activeCategory
+  )
+  .filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+const featured = filtered.slice(0, 6);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -33,7 +46,7 @@ export default function HomeScreen({ navigation }: any) {
         {/* Search Bar */}
         <SearchBar
           value={search}
-          onChangeText={setSearch}
+          onChangeText={(text) => setSearch(text)}
           onFocus={() => navigation.navigate('Explore')}
           style={styles.search}
         />
@@ -51,7 +64,7 @@ export default function HomeScreen({ navigation }: any) {
               label={item.name}
               color={(item as any).color}
               isActive={activeCategory === item.name}
-              onPress={() => setActiveCategory(item.name)}
+              onPress={() => navigation.navigate('ProductDetail', { id: item.id })}
             />
           )}
         />
@@ -64,6 +77,7 @@ export default function HomeScreen({ navigation }: any) {
               key={p.id}
               product={p as any}
               onPress={() => navigation.navigate('ProductDetail', { productId: p.id })}
+              onLongPress={() => toggle(p.id)}   // ✅ ADD THIS LINE
               onAddToCart={() => addItem({ productId: p.id, name: p.name, price: p.price, imageUrl: p.images[0] })}
               layout="grid"
             />
