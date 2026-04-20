@@ -1,63 +1,149 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors, Spacing, FontSize, FontWeight, Radius } from '../../constants/theme';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Colors, Spacing, FontSize, FontWeight, Radius, Shadow } from '../../constants/theme';
+import { useAuthStore } from '../../store/useAuthStore';
+import type { UserRole } from '../../store/useAuthStore';
+import type { RootStackParamList } from '../../navigation/types';
 
-// ─── Person A's screen — placeholder provided by Person E ───
-export default function OnboardingScreen({ navigation }: any) {
-  const slides = [
-    { emoji: '🛒', title: 'Buy Gadgets', sub: 'Browse thousands of phones, laptops, earbuds and more.' },
-    { emoji: '🏪', title: 'Sell Easily', sub: 'List your gadgets in minutes and reach thousands of buyers.' },
-    { emoji: '⚡', title: 'Fast & Secure', sub: 'Safe payments, real-time tracking, and 24/7 support.' },
-  ];
-  const [current, setCurrent] = React.useState(0);
+// ─── Types ────────────────────────────────────────────────────────────────────
+type RoleSelectNavigationProp = NativeStackNavigationProp<RootStackParamList, 'RoleSelect'>;
 
-  const next = () => {
-    if (current < slides.length - 1) setCurrent(current + 1);
-    else navigation.replace('Login');
-  };
+interface Props {
+  navigation: RoleSelectNavigationProp;
+}
+
+interface RoleCardProps {
+  emoji: string;
+  title: string;
+  subtitle: string;
+  role: 'buyer' | 'seller';
+  onPress: (role: 'buyer' | 'seller') => void;
+  isLoading: boolean;
+  activeRole: UserRole;
+}
+
+// ─── Role Card ────────────────────────────────────────────────────────────────
+function RoleCard({ emoji, title, subtitle, role, onPress, isLoading, activeRole }: RoleCardProps) {
+  const isThisLoading = isLoading && activeRole === role;
+  const isOtherLoading = isLoading && activeRole !== role;
+  const cardStyle = role === 'buyer' ? styles.buyerCard : styles.sellerCard;
+
+  return (
+    <TouchableOpacity
+      style={[styles.card, cardStyle, isOtherLoading && styles.cardDisabled]}
+      onPress={() => onPress(role)}
+      activeOpacity={0.85}
+      disabled={isLoading}
+    >
+      {isThisLoading ? (
+        <ActivityIndicator size="large" color="#fff" style={styles.cardSpinner} />
+      ) : (
+        <>
+          <Text style={styles.cardEmoji}>{emoji}</Text>
+          <Text style={styles.cardTitle}>{title}</Text>
+          <Text style={styles.cardSub}>{subtitle}</Text>
+        </>
+      )}
+    </TouchableOpacity>
+  );
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
+export default function RoleSelectScreen({ navigation }: Props) {
+  const setRole = useAuthStore((s) => s.setRole);
+  const [loading, setLoading] = useState(false);
+  const [activeRole, setActiveRole] = useState<UserRole>(null);
+
+  // Bug fix #1 — guard against double state update on unmounted component
+  // (both setLoading + setActiveRole were firing in finally after navigation.replace)
+  const isMounted = useRef(true);
+  useEffect(() => () => { isMounted.current = false; }, []);
+
+  const handleChoose = useCallback(async (role: 'buyer' | 'seller') => {
+    setLoading(true);
+    setActiveRole(role);
+    try {
+      await setRole(role);
+      // Bug fix #2 — reset state BEFORE navigate, not in finally after unmount
+      if (isMounted.current) {
+        setLoading(false);
+        setActiveRole(null);
+      }
+      navigation.replace(role === 'buyer' ? 'BuyerTabs' : 'SellerTabs');
+    } catch (error) {
+      if (isMounted.current) {
+        setLoading(false);
+        setActiveRole(null);
+        Alert.alert(
+          'Something went wrong',
+          'Could not save your role. Please try again.',
+          [{ text: 'OK' }]
+        );
+      }
+    }
+  }, [setRole, navigation]);
 
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={styles.slide}>
-        <Text style={styles.emoji}>{slides[current].emoji}</Text>
-        <Text style={styles.title}>{slides[current].title}</Text>
-        <Text style={styles.sub}>{slides[current].sub}</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>Who are you?</Text>
+        <Text style={styles.sub}>Choose your role to get started</Text>
 
-        <View style={styles.dots}>
-          {slides.map((_, i) => (
-            <View key={i} style={[styles.dot, i === current && styles.dotActive]} />
-          ))}
-        </View>
+        <RoleCard
+          emoji="🛍️"
+          title="I'm a Buyer"
+          subtitle="Browse, compare and buy the latest gadgets"
+          role="buyer"
+          onPress={handleChoose}
+          isLoading={loading}
+          activeRole={activeRole}
+        />
+        <RoleCard
+          emoji="🏪"
+          title="I'm a Seller"
+          subtitle="List your gadgets and connect with buyers"
+          role="seller"
+          onPress={handleChoose}
+          isLoading={loading}
+          activeRole={activeRole}
+        />
 
-        <TouchableOpacity style={styles.btn} onPress={next}>
-          <Text style={styles.btnText}>{current === slides.length - 1 ? 'Get Started' : 'Next'}</Text>
-        </TouchableOpacity>
-
-        {current < slides.length - 1 && (
-          <TouchableOpacity onPress={() => navigation.replace('Login')} style={styles.skip}>
-            <Text style={styles.skipText}>Skip</Text>
-          </TouchableOpacity>
-        )}
+        <Text style={styles.note}>You can switch roles later from your profile settings.</Text>
       </View>
     </SafeAreaView>
   );
 }
 
+// ─── Styles ───────────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
-  slide: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: Spacing.xl },
-  emoji: { fontSize: 80, marginBottom: Spacing.xl },
-  title: { fontSize: FontSize.xxxl, color: Colors.textPrimary, fontWeight: FontWeight.bold, textAlign: 'center' },
-  sub: { fontSize: FontSize.md, color: Colors.textSecondary, textAlign: 'center', marginTop: Spacing.md, lineHeight: 24 },
-  dots: { flexDirection: 'row', gap: 8, marginTop: Spacing.xl },
-  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.border },
-  dotActive: { width: 24, backgroundColor: Colors.primary },
-  btn: { backgroundColor: Colors.primary, borderRadius: Radius.md, paddingVertical: Spacing.md, paddingHorizontal: Spacing.xxl, marginTop: Spacing.xl, width: '100%', alignItems: 'center' },
-  btnText: { color: '#fff', fontSize: FontSize.lg, fontWeight: FontWeight.bold },
-  skip: { marginTop: Spacing.md },
-  skipText: { color: Colors.textSecondary, fontSize: FontSize.md },
+  container: { flex: 1, padding: Spacing.xl, justifyContent: 'center' },
+  title: { fontSize: FontSize.display, color: Colors.textPrimary, fontWeight: FontWeight.bold, textAlign: 'center' },
+  sub: { fontSize: FontSize.md, color: Colors.textSecondary, textAlign: 'center', marginBottom: Spacing.xxl, marginTop: Spacing.sm },
+  card: {
+    borderRadius: Radius.xl,
+    padding: Spacing.xl,
+    marginBottom: Spacing.lg,
+    alignItems: 'center',
+    minHeight: 160,
+    justifyContent: 'center',
+    ...Shadow.md,
+  },
+  buyerCard: { backgroundColor: Colors.primary },
+  sellerCard: { backgroundColor: Colors.accent },
+  cardDisabled: { opacity: 0.4 },
+  cardSpinner: { paddingVertical: Spacing.md },
+  cardEmoji: { fontSize: 56, marginBottom: Spacing.md },
+  cardTitle: { fontSize: FontSize.xxl, color: '#fff', fontWeight: FontWeight.bold },
+  cardSub: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.8)', textAlign: 'center', marginTop: Spacing.xs, lineHeight: 20 },
+  note: { fontSize: FontSize.xs, color: Colors.textMuted, textAlign: 'center', marginTop: Spacing.md },
 });
-
-
-
