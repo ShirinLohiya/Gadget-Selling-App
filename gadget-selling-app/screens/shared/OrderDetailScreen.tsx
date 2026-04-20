@@ -4,11 +4,34 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Spacing, FontSize, FontWeight, Radius } from '../../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import mockOrders from '../../data/mockOrders.json';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// ─── Person C's screen — scaffold provided by Person E ───
+// ─── Person C's screen — Cart & Checkout Lead ───
 export default function OrderDetailScreen({ route, navigation }: any) {
   const { orderId } = route.params;
-  const order = mockOrders.find((o) => o.id === orderId) ?? mockOrders[0];
+  const [order, setOrder] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const stored = await AsyncStorage.getItem('@mock_orders');
+        if (stored) {
+          const orders = JSON.parse(stored);
+          const found = orders.find((o: any) => o.id === orderId);
+          if (found) {
+            setOrder(found);
+            return;
+          }
+        }
+      } catch {}
+      // Fallback to static mock data
+      const fallback = mockOrders.find((o) => o.id === orderId) ?? mockOrders[0];
+      setOrder(fallback);
+    };
+    fetchOrder();
+  }, [orderId]);
+
+  if (!order) return null;
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -23,7 +46,7 @@ export default function OrderDetailScreen({ route, navigation }: any) {
 
         {/* Tracking Timeline */}
         <Text style={styles.sectionTitle}>Tracking</Text>
-        {order.tracking.map((step, i) => (
+        {order.tracking.map((step: any, i: number) => (
           <View key={i} style={styles.trackStep}>
             <View style={[styles.trackDot, step.done && styles.trackDotDone]}>
               {step.done && <Ionicons name="checkmark" size={12} color="#fff" />}
@@ -31,14 +54,18 @@ export default function OrderDetailScreen({ route, navigation }: any) {
             {i < order.tracking.length - 1 && <View style={[styles.trackLine, step.done && styles.trackLineDone]} />}
             <View style={styles.trackInfo}>
               <Text style={[styles.trackLabel, step.done && styles.trackLabelDone]}>{step.status}</Text>
-              {step.timestamp && <Text style={styles.trackTime}>{new Date(step.timestamp).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</Text>}
+              {step.timestamp && (
+                <Text style={styles.trackTime}>
+                  {new Date(step.timestamp).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                </Text>
+              )}
             </View>
           </View>
         ))}
 
         {/* Items */}
         <Text style={styles.sectionTitle}>Items</Text>
-        {order.items.map((item) => (
+        {order.items.map((item: any) => (
           <View key={item.productId} style={styles.itemRow}>
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemQty}>× {item.qty}</Text>
@@ -80,6 +107,3 @@ const styles = StyleSheet.create({
   totalLabel: { fontSize: FontSize.lg, color: Colors.textPrimary, fontWeight: FontWeight.bold },
   totalValue: { fontSize: FontSize.lg, color: Colors.primary, fontWeight: FontWeight.bold },
 });
-
-
-

@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Spacing, FontSize, FontWeight, Radius } from '../../constants/theme';
 import { Button } from '../../components/Button';
 import { useCartStore } from '../../store/useCartStore';
 
-// ─── Person C's screen — scaffold provided by Person E ───
-export default function CheckoutSummaryScreen({ navigation }: any) {
+// ─── Person C's screen — Cart & Checkout Lead ───
+export default function CheckoutSummaryScreen({ route, navigation }: any) {
   const { items, getSubtotal, getDiscount, getTotal } = useCartStore();
+  const address = route.params?.address;
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -17,21 +18,34 @@ export default function CheckoutSummaryScreen({ navigation }: any) {
       <Text style={styles.title}>Order Summary</Text>
       <Text style={styles.step}>Step 2 of 3</Text>
 
-      {items.map((item) => (
-        <View key={item.productId} style={styles.row}>
-          <Text style={styles.itemName} numberOfLines={1}>{item.name} × {item.quantity}</Text>
-          <Text style={styles.itemPrice}>₹{(item.price * item.quantity).toLocaleString('en-IN')}</Text>
-        </View>
-      ))}
+      <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+        {/* Items */}
+        {items.map((item) => (
+          <View key={item.productId} style={styles.row}>
+            <Text style={styles.itemName} numberOfLines={1}>{item.name} × {item.quantity}</Text>
+            <Text style={styles.itemPrice}>₹{(item.price * item.quantity).toLocaleString('en-IN')}</Text>
+          </View>
+        ))}
 
-      <View style={styles.divider} />
-      <View style={styles.row}><Text style={styles.label}>Subtotal</Text><Text style={styles.value}>₹{getSubtotal().toLocaleString('en-IN')}</Text></View>
-      <View style={styles.row}><Text style={styles.label}>Discount</Text><Text style={[styles.value, { color: Colors.success }]}>-₹{getDiscount().toLocaleString('en-IN')}</Text></View>
-      <View style={styles.row}><Text style={styles.label}>Delivery</Text><Text style={styles.value}>{getSubtotal() > 50000 ? 'Free' : '₹99'}</Text></View>
-      <View style={[styles.row, styles.totalRow]}><Text style={styles.totalLabel}>Grand Total</Text><Text style={styles.totalValue}>₹{getTotal().toLocaleString('en-IN')}</Text></View>
+        {/* Delivery Address */}
+        {address && (
+          <View style={styles.addressBox}>
+            <Text style={styles.sectionLabel}>📍 Delivering To:</Text>
+            <Text style={styles.addrName}>{address.name}</Text>
+            <Text style={styles.addrLine}>{address.line}</Text>
+            <Text style={styles.addrPhone}>📱 {address.phone}</Text>
+          </View>
+        )}
+
+        <View style={styles.divider} />
+        <View style={styles.row}><Text style={styles.label}>Subtotal</Text><Text style={styles.value}>₹{getSubtotal().toLocaleString('en-IN')}</Text></View>
+        <View style={styles.row}><Text style={styles.label}>Discount</Text><Text style={[styles.value, { color: Colors.success }]}>-₹{getDiscount().toLocaleString('en-IN')}</Text></View>
+        <View style={styles.row}><Text style={styles.label}>Delivery</Text><Text style={styles.value}>{getSubtotal() > 50000 ? 'Free' : '₹99'}</Text></View>
+        <View style={[styles.row, styles.totalRow]}><Text style={styles.totalLabel}>Grand Total</Text><Text style={styles.totalValue}>₹{getTotal().toLocaleString('en-IN')}</Text></View>
+      </ScrollView>
 
       <View style={styles.footer}>
-        <Button label="Proceed to Pay →" onPress={() => navigation.navigate('CheckoutPayment')} fullWidth size="lg" />
+        <Button label="Proceed to Pay →" onPress={() => navigation.navigate('CheckoutPayment', { address })} fullWidth size="lg" />
       </View>
     </SafeAreaView>
   );
@@ -46,6 +60,11 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: Spacing.sm },
   itemName: { flex: 1, color: Colors.textSecondary, fontSize: FontSize.sm },
   itemPrice: { color: Colors.textPrimary, fontSize: FontSize.sm, fontWeight: FontWeight.medium },
+  addressBox: { marginTop: Spacing.md, padding: Spacing.md, backgroundColor: Colors.surface, borderRadius: Radius.md, borderWidth: 1, borderColor: Colors.border },
+  sectionLabel: { fontSize: FontSize.sm, color: Colors.textSecondary, marginBottom: Spacing.xs, fontWeight: FontWeight.semiBold },
+  addrName: { fontSize: FontSize.md, color: Colors.textPrimary, fontWeight: FontWeight.semiBold, marginBottom: 2 },
+  addrLine: { fontSize: FontSize.sm, color: Colors.textSecondary, lineHeight: 20 },
+  addrPhone: { fontSize: FontSize.xs, color: Colors.textMuted, marginTop: 4 },
   divider: { height: 1, backgroundColor: Colors.border, marginVertical: Spacing.md },
   label: { color: Colors.textSecondary, fontSize: FontSize.md },
   value: { color: Colors.textPrimary, fontSize: FontSize.md, fontWeight: FontWeight.medium },
@@ -54,6 +73,3 @@ const styles = StyleSheet.create({
   totalValue: { color: Colors.primary, fontSize: FontSize.xl, fontWeight: FontWeight.bold },
   footer: { position: 'absolute', bottom: Spacing.xl, left: Spacing.md, right: Spacing.md },
 });
-
-
-

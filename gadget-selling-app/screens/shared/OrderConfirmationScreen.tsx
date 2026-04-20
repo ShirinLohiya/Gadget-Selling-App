@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet,  } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors, Spacing, FontSize, FontWeight, Radius } from '../../constants/theme';
+import { Colors, Spacing, FontSize, FontWeight } from '../../constants/theme';
 import { Button } from '../../components/Button';
 
-// ─── Person C's screen — scaffold provided by Person E ───
+// ─── Person C's screen — Cart & Checkout Lead ───
 export default function OrderConfirmationScreen({ route, navigation }: any) {
   const { orderId } = route.params;
 
@@ -17,8 +17,19 @@ export default function OrderConfirmationScreen({ route, navigation }: any) {
         <Text style={styles.sub}>Your gadget is on its way. Track it in My Orders.</Text>
 
         <View style={styles.buttons}>
-          <Button label="Track My Order" onPress={() => navigation.navigate('OrderDetail', { orderId })} fullWidth size="lg" style={{ marginBottom: Spacing.sm }} />
-          <Button label="Continue Shopping" onPress={() => navigation.navigate('BuyerTabs')} variant="outline" fullWidth />
+          <Button
+            label="Track My Order"
+            onPress={() => navigation.navigate('OrderDetail', { orderId })}
+            fullWidth
+            size="lg"
+            style={{ marginBottom: Spacing.sm }}
+          />
+          <Button
+            label="Continue Shopping"
+            onPress={() => navigation.navigate('BuyerTabs')}
+            variant="outline"
+            fullWidth
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -34,5 +45,3 @@ const styles = StyleSheet.create({
   sub: { fontSize: FontSize.md, color: Colors.textSecondary, textAlign: 'center', marginTop: Spacing.md, lineHeight: 22 },
   buttons: { width: '100%', marginTop: Spacing.xxl },
 });
-
-

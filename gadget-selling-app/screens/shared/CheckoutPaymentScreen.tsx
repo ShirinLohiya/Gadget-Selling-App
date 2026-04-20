@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Spacing, FontSize, FontWeight, Radius } from '../../constants/theme';
 import { Button } from '../../components/Button';
 import { useCartStore } from '../../store/useCartStore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PAYMENT_METHODS = [
   { id: 'upi', label: 'UPI', emoji: '📱' },
@@ -12,19 +13,50 @@ const PAYMENT_METHODS = [
   { id: 'cod', label: 'Cash on Delivery', emoji: '💵' },
 ];
 
-// ─── Person C's screen — scaffold provided by Person E ───
-export default function CheckoutPaymentScreen({ navigation }: any) {
+// ─── Person C's screen — Cart & Checkout Lead ───
+export default function CheckoutPaymentScreen({ route, navigation }: any) {
   const [selected, setSelected] = useState('upi');
   const [paying, setPaying] = useState(false);
-  const { clearCart, getTotal } = useCartStore();
+  const { clearCart, getTotal, getSubtotal, items, getDiscount, promoCode } = useCartStore();
+  const address = route.params?.address;
 
   const handlePay = async () => {
     setPaying(true);
-    // Simulate payment processing
+    // Simulate payment processing — 2s loading animation
     await new Promise((r) => setTimeout(r, 2000));
+
+    const orderId = `ORD${Date.now()}`;
+    const newOrder = {
+      id: orderId,
+      userId: 'mock_user',
+      createdAt: new Date().toISOString(),
+      status: 'processing',
+      total: getTotal(),
+      discount: getDiscount(),
+      delivery: getSubtotal() > 50000 ? 0 : 99,
+      promoCode: promoCode || null,
+      paymentMethod: PAYMENT_METHODS.find(m => m.id === selected)?.label || selected,
+      address: address || { name: 'Saved Address' },
+      items: items.map(i => ({ productId: i.productId, name: i.name, qty: i.quantity, price: i.price, image: i.imageUrl })),
+      tracking: [
+        { status: 'Order Placed', timestamp: new Date().toISOString(), done: true },
+        { status: 'Payment Confirmed', timestamp: new Date().toISOString(), done: true },
+        { status: 'Packed', timestamp: null, done: false },
+        { status: 'Shipped', timestamp: null, done: false },
+        { status: 'Out for Delivery', timestamp: null, done: false },
+        { status: 'Delivered', timestamp: null, done: false },
+      ],
+    };
+
+    try {
+      const existing = await AsyncStorage.getItem('@mock_orders');
+      const orders = existing ? JSON.parse(existing) : [];
+      orders.unshift(newOrder);
+      await AsyncStorage.setItem('@mock_orders', JSON.stringify(orders));
+    } catch {}
+
     clearCart();
     setPaying(false);
-    const orderId = `ORD${Date.now()}`;
     navigation.replace('OrderConfirmation', { orderId });
   };
 
@@ -49,7 +81,7 @@ export default function CheckoutPaymentScreen({ navigation }: any) {
       <View style={styles.footer}>
         {paying ? (
           <View style={styles.payingRow}>
-            <ActivityIndicator color={Colors.primary} />
+            <ActivityIndicator color={Colors.primary} size="large" />
             <Text style={styles.payingText}>Processing payment...</Text>
           </View>
         ) : (
@@ -76,6 +108,3 @@ const styles = StyleSheet.create({
   payingRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: Spacing.sm },
   payingText: { color: Colors.textSecondary, fontSize: FontSize.md },
 });
-
-
-
