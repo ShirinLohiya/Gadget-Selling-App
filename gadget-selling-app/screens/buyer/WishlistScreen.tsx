@@ -9,7 +9,7 @@ import products from '../../data/products.json';
 
 // ─── Person B's screen — scaffold provided by Person E ───
 export default function WishlistScreen({ navigation }: any) {
-  const { productIds } = useWishlistStore();
+  const { productIds, toggle } = useWishlistStore();
   const addItem = useCartStore((s) => s.addItem);
   const wishlisted = products.filter((p) => productIds.includes(p.id));
 
@@ -36,8 +36,18 @@ export default function WishlistScreen({ navigation }: any) {
         renderItem={({ item }) => (
           <ProductCard
             product={item as any}
-            onPress={() => navigation.navigate('ProductDetail', { productId: item.id })}
-            onAddToCart={() => addItem({ productId: item.id, name: item.name, price: item.price, imageUrl: item.images[0] })}
+            onPress={() =>
+              navigation.navigate('ProductDetail', { productId: item.id })
+            }
+            onLongPress={() => toggle(item.id)}   // ✅ ADD THIS
+            onAddToCart={() =>
+              addItem({
+                productId: item.id,
+                name: item.name,
+                price: item.price,
+                imageUrl: item.images[0],
+              })
+            }
           />
         )}
       />

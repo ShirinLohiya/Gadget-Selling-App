@@ -6,6 +6,7 @@ import { SearchBar } from '../../components/SearchBar';
 import { CategoryPill } from '../../components/CategoryPill';
 import { ProductCard } from '../../components/ProductCard';
 import { useCartStore } from '../../store/useCartStore';
+import { useWishlistStore } from '../../store/useWishlistStore';
 import products from '../../data/products.json';
 import categories from '../../data/categories.json';
 
@@ -14,17 +15,34 @@ export default function ExploreScreen({ navigation }: any) {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const addItem = useCartStore((s) => s.addItem);
+  const [sort, setSort] = React.useState('low'); // low or high
+  const { toggle } = useWishlistStore();
 
-  const filtered = products.filter((p) => {
-    const matchQuery = query.trim() === '' || p.name.toLowerCase().includes(query.toLowerCase()) || p.brand.toLowerCase().includes(query.toLowerCase());
-    const matchCat = activeCategory === 'All' || p.category === activeCategory;
+  const filtered = products
+  .filter((p) => {
+    const matchQuery =
+      query.trim() === '' ||
+      p.name.toLowerCase().includes(query.toLowerCase()) ||
+      p.brand.toLowerCase().includes(query.toLowerCase());
+
+    const matchCat =
+      activeCategory === 'All' || p.category === activeCategory;
+
     return matchQuery && matchCat;
-  });
+  })
+  .sort((a, b) =>
+    sort === 'low' ? a.price - b.price : b.price - a.price
+  );
 
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
-        <Text style={styles.title}>Explore</Text>
+        <Text
+  style={{ color: Colors.primary, marginBottom: 8 }}
+  onPress={() => setSort(sort === 'low' ? 'high' : 'low')}
+>
+  Sort by Price: {sort === 'low' ? 'Low → High' : 'High → Low'}
+</Text>
         <SearchBar value={query} onChangeText={setQuery} autoFocus style={styles.search} />
         <FlatList
           horizontal
@@ -46,11 +64,25 @@ export default function ExploreScreen({ navigation }: any) {
         renderItem={({ item }) => (
           <ProductCard
             product={item as any}
-            onPress={() => navigation.navigate('ProductDetail', { productId: item.id })}
-            onAddToCart={() => addItem({ productId: item.id, name: item.name, price: item.price, imageUrl: item.images[0] })}
+            onPress={() =>
+              navigation.navigate('ProductDetail', { productId: item.id })
+            }
+            onLongPress={() => toggle(item.id)}
+            onAddToCart={() =>
+              addItem({
+                productId: item.id,
+                name: item.name,
+                price: item.price,
+                imageUrl: item.images[0],
+              })
+            }
           />
         )}
-        ListEmptyComponent={<Text style={styles.empty}>No gadgets found. Try a different search.</Text>}
+        ListEmptyComponent={
+          <Text style={styles.empty}>
+            No gadgets found. Try a different search.
+          </Text>
+        }
       />
     </SafeAreaView>
   );

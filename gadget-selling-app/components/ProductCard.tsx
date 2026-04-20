@@ -29,6 +29,7 @@ export interface Product {
 interface ProductCardProps {
   product: Product;
   onPress: () => void;
+  onLongPress?: () => void;
   onAddToCart?: () => void;
   layout?: 'grid' | 'list';
 }
@@ -36,6 +37,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onPress,
+  onLongPress,
   onAddToCart,
   layout = 'grid',
 }) => {
@@ -46,7 +48,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   if (layout === 'list') {
     return (
-      <TouchableOpacity style={styles.listCard} onPress={onPress} activeOpacity={0.85}>
+      <TouchableOpacity style={styles.listCard} onPress={onPress} onLongPress={onLongPress} activeOpacity={0.85}>
         <Image source={{ uri: product.images[0] }} style={styles.listImage} resizeMode="cover" />
         <View style={styles.listContent}>
           <Text style={styles.brandText}>{product.brand}</Text>
@@ -76,7 +78,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   }
 
   return (
-    <TouchableOpacity style={styles.gridCard} onPress={onPress} activeOpacity={0.85}>
+    <TouchableOpacity style={styles.gridCard} onPress={onPress} onLongPress={onLongPress} activeOpacity={0.85}>
       {/* Discount Badge */}
       {product.discount > 0 && (
         <View style={styles.discountBadge}>
