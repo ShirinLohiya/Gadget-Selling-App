@@ -64,7 +64,7 @@ const featured = filtered.slice(0, 6);
               label={item.name}
               color={(item as any).color}
               isActive={activeCategory === item.name}
-              onPress={() => navigation.navigate('ProductDetail', { id: item.id })}
+              onPress={() => setActiveCategory(item.name)}
             />
           )}
         />
@@ -96,7 +96,10 @@ const styles = StyleSheet.create({
   tagline: { fontSize: FontSize.sm, color: Colors.textSecondary, marginTop: 2 },
   search: { marginBottom: Spacing.md },
   sectionTitle: { fontSize: FontSize.lg, color: Colors.textPrimary, fontWeight: FontWeight.bold, marginBottom: Spacing.sm, marginTop: Spacing.md },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -Spacing.xs },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
 });
 
 

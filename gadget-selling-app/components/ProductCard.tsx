@@ -147,8 +147,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.surface,
     borderRadius: Radius.lg,
     overflow: 'hidden',
-    flex: 1,
-    margin: Spacing.xs,
+    width: '50%',
+    paddingHorizontal: Spacing.xs,
+    marginBottom: Spacing.sm,
     ...Shadow.sm,
   },
   gridImage: {
