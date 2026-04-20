@@ -342,9 +342,7 @@ Inquiries Screen
 ### 👤 Seller Profile Tab
 ```
 Profile Screen
-    ├── Avatar, Business Name, Email
-    ├── [Settings] (Dark Mode, Change Password)
-    ├── [Help & Support]
+    ├── Business Name, Email
     └── [Logout] ────────────────────► Role Selection Screen
 ```
 
@@ -407,6 +405,10 @@ npm install
 
 # Start Expo dev server
 npx expo start
+npx expo install expo-router
+npx expo install @expo/vector-icons
+npx expo install react-native-uuid
+npx expo install expo-image-picker
 
 # Run on Android emulator / device
 npx expo start --android
