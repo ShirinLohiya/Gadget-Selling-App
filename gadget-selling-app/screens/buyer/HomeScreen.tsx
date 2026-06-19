@@ -64,7 +64,7 @@ const featured = filtered.slice(0, 6);
               label={item.name}
               color={(item as any).color}
               isActive={activeCategory === item.name}
-              onPress={() => setActiveCategory(item.name)}
+              onPress={() => navigation.navigate('ProductDetail', { id: item.id })}
             />
           )}
         />
